@@ -138,5 +138,10 @@
       "plaintext": true,
       "markdown": true,
       "cpp": false
+  },
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#0D350A",
+    "titleBar.activeBackground": "#124A0E",
+    "titleBar.activeForeground": "#F2FCF2"
   }
 }
