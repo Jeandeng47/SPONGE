@@ -32,23 +32,17 @@ uint64_t unwrap(WrappingInt32 n, WrappingInt32 isn, uint64_t checkpoint) {
 
     // n = (isn + n_abs ) (% 2^32)
     // n_abs = (n - isn) (% 2^32)
-    // auto low32 = static_cast<uint32_t>(n - isn);
+    auto low32 = static_cast<uint32_t>(n - isn);
 
-    // auto high32_upper = (checkpoint + (1 << 31)) & 0xFFFFFFFF00000000; 
-    // auto high32_lower = (checkpoint - (1 << 31)) & 0xFFFFFFFF00000000;
+    auto high32_upper = (checkpoint + (1 << 31)) & 0xFFFFFFFF00000000; 
+    auto high32_lower = (checkpoint - (1 << 31)) & 0xFFFFFFFF00000000;
 
-    // auto candidate1 = high32_upper + low32;
-    // auto candidate2 = high32_lower + low32;
+    auto candidate1 = high32_upper + low32;
+    auto candidate2 = high32_lower + low32;
 
-    // auto d1 = candidate1 > checkpoint ? candidate1 - checkpoint : checkpoint - candidate1;
-    // auto d2 = candidate2 > checkpoint ? candidate2 - checkpoint : checkpoint - candidate2;
+    auto d1 = candidate1 > checkpoint ? candidate1 - checkpoint : checkpoint - candidate1;
+    auto d2 = candidate2 > checkpoint ? candidate2 - checkpoint : checkpoint - candidate2;
 
-    // return d1 < d2 ? candidate1 : candidate2;
+    return d1 < d2 ? candidate1 : candidate2;
 
-
-
-    WrappingInt32 cp = wrap(checkpoint, isn);
-    int32_t offset = n - cp;
-    printf("n: %u, isn: %u, checkpoint: %lu, offset: %d\n", n.raw_value(), isn.raw_value(), checkpoint, offset);
-    return checkpoint + offset;
 }
