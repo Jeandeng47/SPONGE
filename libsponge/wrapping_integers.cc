@@ -30,10 +30,15 @@ WrappingInt32 wrap(uint64_t n, WrappingInt32 isn) {
 //! has a different ISN.
 uint64_t unwrap(WrappingInt32 n, WrappingInt32 isn, uint64_t checkpoint) {
 
-    // n = (isn + n_abs ) (% 2^32)
-    // n_abs = (n - isn) (% 2^32)
+    // n = isn + n_abs  (% 2^32)
+    // n_abs = n - isn (% 2^32)
+
+    // Since we mod 32, the lower 32 bits of n_abs are known
     auto low32 = static_cast<uint32_t>(n - isn);
 
+    // The interval between any consecutive n_abs numbers is 2^32,
+    // given a checkpoint, the possible n_abs values could
+    // only lie within +/- 2^31 of the checkpoint. 
     auto high32_upper = (checkpoint + (1 << 31)) & 0xFFFFFFFF00000000; 
     auto high32_lower = (checkpoint - (1 << 31)) & 0xFFFFFFFF00000000;
 
