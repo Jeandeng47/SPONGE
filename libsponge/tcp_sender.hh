@@ -8,6 +8,7 @@
 
 #include <functional>
 #include <queue>
+#include <utility>
 
 //! \brief The "sender" part of a TCP implementation.
 
@@ -31,6 +32,33 @@ class TCPSender {
 
     //! the (absolute) sequence number for the next byte to be sent
     uint64_t _next_seqno{0};
+
+    //!< has the SYN segment been sent?
+    bool _syn_sent{false}; 
+
+    //!< has the FIN segment been sent?
+    bool _fin_sent{false}; 
+
+    //!< the current window size advertised by the receiver
+    uint16_t _window_size{0}; 
+
+    //!< number of bytes in flight 
+    uint64_t _bytes_in_flight{0}; 
+
+    //!< number of consecutive retransmissions that have occurred in a row
+    uint16_t _consecutive_retrans{0};
+
+    //!< segments that have been sent but not yet acknowledged, along with their sequence numbers
+    std::deque<std::pair<uint64_t, TCPSegment>> _outstanding_seg{};
+
+    //!< is the retransmission timer running?
+    bool _timer_running{false};  
+    
+    //!< time elapsed since the last tick
+    uint64_t _time_elapsed{0};  
+
+    //!< current retransmission timeout in milliseconds
+    uint64_t _retrans_timeout{0};  
 
   public:
     //! Initialize a TCPSender

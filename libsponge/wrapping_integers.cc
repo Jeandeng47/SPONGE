@@ -47,7 +47,7 @@ uint64_t unwrap(WrappingInt32 n, WrappingInt32 isn, uint64_t checkpoint) {
 
     auto d1 = candidate1 > checkpoint ? candidate1 - checkpoint : checkpoint - candidate1;
     auto d2 = candidate2 > checkpoint ? candidate2 - checkpoint : checkpoint - candidate2;
-
+ 
     return d1 < d2 ? candidate1 : candidate2;
 
 }
